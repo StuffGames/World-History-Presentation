@@ -7,7 +7,7 @@ public class SceneManager : MonoBehaviour
 {
     public EventContentList e;
 
-    //Process in which button gets selected.
+    //If button is selected, turn off until other button selected from the events list
     public void ButtonSelection(GameObject button){
         button.GetComponent<Button>().interactable = false;
         e.SwitchEvents(button.GetComponent<RectTransform>());

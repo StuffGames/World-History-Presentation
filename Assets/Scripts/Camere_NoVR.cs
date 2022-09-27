@@ -8,67 +8,45 @@ using UnityEngine;
 public class Camere_NoVR : MonoBehaviour
 {
 
-    private Camera cam;
-    private Vector2 rotation = new Vector2(0,0);
+    private Camera cam; // Camera component of GameObject
+    private Vector2 rotation = Vector2.zero; // vector equal to (0,0)
     
-    public float sensitivity;
-    public float yRotationLimit;
-    public float camSpeed;
-    
-    
+    public float sensitivity; // sensitivity changed in the editor
+    public float yRotationLimit; // rotation limit set in the editor
+    public float camSpeed; // camera speed set in the editor
+
     void Start()
     {
-        cam = gameObject.GetComponent<Camera>();
+        cam = gameObject.GetComponent<Camera>(); //Gets the camera component
     }
 
     void Update()
     {
-        // Cursor.visible = true;
-        // Cursor.lockState = CursorLockMode.None;
-
-        //Mouse Properties
-        // bool inGame = true;
-        // if (Input.GetKeyDown(KeyCode.Escape)) inGame = false;
-
-        // if (inGame) {
-        //     Cursor.visible = false;
-        //     Cursor.lockState = CursorLockMode.Locked;
-        // }
-
-        //Lateral Movement
-        if (Input.GetKey(KeyCode.W)){
-            transform.position += transform.forward * camSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.S)){
-            transform.position += transform.forward * -camSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.A)){
-            transform.position += transform.right * -camSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D)){
-            transform.position += transform.right * camSpeed * Time.deltaTime;
-        }
-
-        //Vertical Movement
-        if (Input.GetKey(KeyCode.Space)){
-            transform.position += transform.up * camSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.LeftControl)){
-            transform.position += transform.up * -camSpeed * Time.deltaTime;
-        }
+        CameraMovement();
 
         CameraRotation();
     }
 
+    //Moves the camera based on the input (WASD)
+    void CameraMovement(){
+        float speed = camSpeed * Time.deltaTime; // takes preset float from the editor and makes it consistent with Time.deltaTime
+        float moveX = Input.GetAxis("Horizontal"); //A, D Input
+        float moveY = Input.GetAxis("Vertical"); //W, S Input
+        float moveZ = Input.GetAxis("Jump"); // Space, LeftCtrl Input
+
+        transform.position += ((transform.forward * moveY)+(transform.right * moveX)+(Vector3.up * moveZ)) * speed; // Change transform based on input on the correct axis
+    }
+
+    //First Person Camera Movement
     void CameraRotation(){
         //Camera Rotation
-        rotation.x += Input.GetAxis("Mouse X") * sensitivity;
-        rotation.y += Input.GetAxis("Mouse Y") * sensitivity;
-        rotation.y = Mathf.Clamp(rotation.y, -yRotationLimit, yRotationLimit);
+        rotation.x += Input.GetAxis("Mouse X") * sensitivity; //Mouse sensitivity X
+        rotation.y += Input.GetAxis("Mouse Y") * sensitivity; //Mouse sensitivity Y
+        rotation.y = Mathf.Clamp(rotation.y, -yRotationLimit, yRotationLimit); //Constrains Y rotation to predetermined limit
 
-        Quaternion xQ = Quaternion.AngleAxis(rotation.x,Vector3.up);
-        Quaternion yQ = Quaternion.AngleAxis(rotation.y, Vector3.left);
+        Quaternion xQ = Quaternion.AngleAxis(rotation.x,Vector3.up); //Rotate camera along vertical axis based on Mouse Movement X
+        Quaternion yQ = Quaternion.AngleAxis(rotation.y, Vector3.left); //Rotate Camera along horizontal axis based on Movement Y
 
-        transform.localRotation = xQ * yQ;
+        transform.localRotation = xQ * yQ; //Change camera rotation based on both rotation values from above
     }
 }
