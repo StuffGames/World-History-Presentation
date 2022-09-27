@@ -23,24 +23,17 @@ public class Camere_NoVR : MonoBehaviour
 
     void Update()
     {
-        //Mouse Properties
-        bool inGame = true;
-        if (Input.GetKeyDown(KeyCode.Escape)) inGame = false;
+        // Cursor.visible = true;
+        // Cursor.lockState = CursorLockMode.None;
 
-        if (inGame) {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }else {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
-        bool raycast = Physics.Raycast(ray, out hit, 100f);
-        //Debug.Log("Raycast hit?: " + raycast);
-        if (raycast)
-            Debug.Log(hit.transform.name);
-        
+        //Mouse Properties
+        // bool inGame = true;
+        // if (Input.GetKeyDown(KeyCode.Escape)) inGame = false;
+
+        // if (inGame) {
+        //     Cursor.visible = false;
+        //     Cursor.lockState = CursorLockMode.Locked;
+        // }
 
         //Lateral Movement
         if (Input.GetKey(KeyCode.W)){
@@ -64,6 +57,10 @@ public class Camere_NoVR : MonoBehaviour
             transform.position += transform.up * -camSpeed * Time.deltaTime;
         }
 
+        CameraRotation();
+    }
+
+    void CameraRotation(){
         //Camera Rotation
         rotation.x += Input.GetAxis("Mouse X") * sensitivity;
         rotation.y += Input.GetAxis("Mouse Y") * sensitivity;
@@ -73,6 +70,5 @@ public class Camere_NoVR : MonoBehaviour
         Quaternion yQ = Quaternion.AngleAxis(rotation.y, Vector3.left);
 
         transform.localRotation = xQ * yQ;
-    
     }
 }

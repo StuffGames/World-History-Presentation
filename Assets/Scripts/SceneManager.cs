@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public EventContentList e;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    //Process in which button gets selected.
+    public void ButtonSelection(GameObject button){
+        button.GetComponent<Button>().interactable = false;
+        e.SwitchEvents(button.GetComponent<RectTransform>());
     }
 }

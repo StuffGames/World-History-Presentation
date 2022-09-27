@@ -11,6 +11,7 @@ public class EventContentList : MonoBehaviour
 
     void Start()
     {
+        //Creates a list of the Buttons avaiblable
         tr = gameObject.GetComponent<RectTransform>();
         
         for (int i = 0; i < tr.childCount; i++){
@@ -20,6 +21,15 @@ public class EventContentList : MonoBehaviour
                 continue;
             }
             events[i].anchoredPosition3D = new Vector3(0f, events[i - 1].anchoredPosition3D.y - 35f, 0f);
+        }
+    }
+
+    public void SwitchEvents (RectTransform button) {
+        foreach (RectTransform rt in events){
+            if (rt == button){
+                continue;
+            }
+            rt.GetComponent<Button>().interactable = true;
         }
     }
 }
