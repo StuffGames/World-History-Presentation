@@ -2978,6 +2978,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   e: {fileID: 2047505691}
+  skyboxes:
+  - {fileID: 2100000, guid: f303023390bd1584e8401b256c6edbd9, type: 2}
+  - {fileID: 2100000, guid: 3a408e788dcbed6429c8d22a01b32a76, type: 2}
+  - {fileID: 2100000, guid: 2ab4ce455dfa549448c061bcf8609383, type: 2}
 --- !u!4 &1884933059
 Transform:
   m_ObjectHideFlags: 0
