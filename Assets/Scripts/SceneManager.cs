@@ -8,7 +8,7 @@ public class SceneManager : MonoBehaviour
     public EventContentList e;
     public List<Material> skyboxes;
 
-    private int i = 1;
+    private int event_id = 1;
     private float lerpTime = 0.9f;
 
     private bool mFlag = false;
@@ -16,23 +16,31 @@ public class SceneManager : MonoBehaviour
     private Material m;
 
     void Start() {
-        m = new Material(RenderSettings.skybox);
+        m = new Material(RenderSettings.skybox); //Creating a copy of the skybox material
     }
 
     void Update(){
         SkyBoxChange();
     }
 
-    //If button is selected, turn off until other button selected from the events list
+    //CHANGE TO SEPARATE OBJECTS LATER,
+    //list of objects that conatin music, environment, lighting, text, etc
+
+    // Called from the Editor when the Button is selected
+    // 
     public void ButtonSelection(GameObject button){
         button.GetComponent<Button>().interactable = false;
         e.SwitchEvents(button.GetComponent<RectTransform>());
-        //m = new Material(RenderSettings.skybox);
+
+        //Find the index of the button in the list of events
+        for(int i = 0; i < e.events.Count; i++){
+            if (e.events[i].gameObject == button) event_id = i;
+        }
         m.name = "Temporary Material";
         RenderSettings.skybox = m;
-        
-        i++;
-        if (i >= skyboxes.Count) i = 0;
+
+        if (event_id >= skyboxes.Count) event_id = 0;
+        lTime = 0;
         mFlag = true;
     }
 
@@ -41,7 +49,7 @@ public class SceneManager : MonoBehaviour
     //Changes the skybox over time
     private void SkyBoxChange(){
         if (mFlag){
-            m.Lerp(m, skyboxes[i], lerpTime * Time.deltaTime);
+            m.Lerp(m, skyboxes[event_id], lerpTime * Time.deltaTime);
             DynamicGI.UpdateEnvironment();
             lTime += lerpTime * Time.deltaTime;
         }
